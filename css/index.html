@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Javascript Box</title>
+    <style>
+      .spanTitile {
+      }
+      .img {
+        width: 70%;
+      }
+      #dynimicalBind {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .dynimicalBindDiv {
+        padding: 12px;
+        width: 22%;
+        border: 1px solid silver;
+        justify-content: center;
+        align-items: center;
+        text-transform: capitalize;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dynimicalBind"></div>
+  </body>
+</html>
+
+<script>
+  let request = new XMLHttpRequest();
+  const url = `https://fakestoreapi.com/products`;
+  request.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200) {
+      const response = JSON.parse(this.responseText);
+      getElements(response);
+    }
+  };
+
+  request.open("GET", url, true);
+  request.send();
+
+  function getElements(response) {
+    const namesContainer = document.getElementById("dynimicalBind");
+    for (let i = 0; i < response.length; i++) {
+      const nameElem = document.createElement("div");
+      nameElem.className = "dynimicalBindDiv";
+      namesContainer.appendChild(nameElem);
+
+      const spanTitle = document.createElement("span");
+      spanTitle.className = "spanTitile";
+      spanTitle.textContent = response[i].title;
+      nameElem.appendChild(spanTitle);
+
+      const brElement = document.createElement("br");
+      nameElem.appendChild(brElement);
+
+      const priceSpan = document.createElement("span");
+      priceSpan.className = "priceNumber";
+      priceSpan.textContent = response[i].price;
+      nameElem.appendChild(priceSpan);
+
+      const imgElement = document.createElement("img");
+      imgElement.className = "img";
+      imgElement.src = response[i].image;
+      nameElem.appendChild(imgElement);
+
+      const spanDescription = document.createElement("span");
+      spanDescription.className = "spanDescription";
+      spanDescription.textContent = response[i].description;
+      nameElem.appendChild(spanDescription);
+    }
+  }
+</script>
